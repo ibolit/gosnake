@@ -1,25 +1,26 @@
 package main
 
 import (
-	"gosnake/field"
-	"gosnake/util"
-	"gosnake/snake"
 	"fmt"
+	"gosnake/field"
+	"gosnake/snake"
+	"gosnake/util"
 )
 
+// Rabbit Possible symbols for a rabbit to be eaten by a snake
+const Rabbit = "🐇🐁🐀🐔🐓🐊🐉🐤🐥🐦🐭🐯🐹🙀😼"
 
+// Rabbit2 Alternative symbols
+const Rabbit2 = "🐰🐅🐙☠☣☢"
 
-const RABBIT = "🐇🐁🐀🐔🐓🐊🐉🐤🐥🐦🐭🐯🐹🙀😼"
-const R_2 = "🐰🐅🐙☠☣☢"
+var i int
 
-
-func printSnake(a_snake *snake.Snake) {
-	for it := a_snake.Iterator(); it.Next(); {
-		util.PrintAt(it.Value().Point(), ">")
+func printSnake(aSnake *snake.Snake) {
+	for it := aSnake.Iterator(); it.Next(); i++ {
+		util.PrintAt(it.Value().Point(), it.Value().Value())
+		util.PrintAt(util.Point{X: 14 + i, Y: 0}, fmt.Sprintf("%p", it))
 	}
 }
-
-
 
 func main() {
 	fmt.Println("Hello	")
@@ -33,19 +34,14 @@ func main() {
 	// 	currentSegment = newSegment
 	// }
 
+	aField := field.NewField(10, 10)
+	aField.Print()
 
-	a_field := field.NewField(10, 10)
-	a_field.Print()
-
-	a_snake := snake.NewSnake()
-	// printSnake(a_snake)
-	a_snake.MoveTo(util.Point{0, 1})
+	aSnake := snake.NewSnake()
+	printSnake(aSnake)
+	aSnake.MoveTo(util.Point{X: 0, Y: 1})
 	// a_field.Print()
-	printSnake(a_snake)
-	
-
-
-
+	printSnake(aSnake)
 
 	// currentSegment = rootSegment
 	// for currentSegment.HasNext() {
@@ -54,7 +50,6 @@ func main() {
 	// 	currentSegment = currentSegment.Next()
 	// }
 
-	util.PrintAt(util.Point{11, 0}, ">>")
-
+	util.PrintAt(util.Point{X: 11, Y: 0}, ">>")
 
 }

@@ -11,6 +11,11 @@ type Point struct {
 }
 
 
+func (point Point) String() string {
+    return fmt.Sprintf("x: %d, y: %d", point.X, point.Y)
+}
+
+
 func PrintAt(point Point, value interface{}) {
     fmt.Printf("\033[%d;%df%s", point.X, point.Y, value)
 }
