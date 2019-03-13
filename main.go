@@ -5,6 +5,7 @@ import (
 	"gosnake/field"
 	"gosnake/snake"
 	"gosnake/util"
+	"time"
 )
 
 // Rabbit Possible symbols for a rabbit to be eaten by a snake
@@ -17,18 +18,37 @@ var i int
 
 func printSnake(aSnake *snake.Snake) {
 	for it := aSnake.Iterator(); it.Next(); i++ {
-		util.PrintAt(it.Value().Point(), it.Value().Value())
-		util.PrintAt(util.Point{X: 14 + i, Y: 0}, fmt.Sprint("The point: ", it.Value().Point(), "the value", it.Value().Value()))
+		util.PointPrint(it.Value())
 	}
 }
 
 func main() {
 	aField := field.NewField(10, 10)
 	aField.Print()
-
 	aSnake := snake.NewSnake()
 	printSnake(aSnake)
-	aSnake.MoveTo(util.Point{X: 0, Y: 1})
-	// a_field.Print()
-	printSnake(aSnake)
+
+	i := 0
+
+	ticker := time.NewTicker(time.Millisecond * 500)
+	wait := true
+
+	go func() {
+		for t := range ticker.C {
+			i++
+			aSnake.MoveTo(util.Point{X: 0, Y: i})
+			printSnake(aSnake)
+			if i > 12 {
+				ticker.Stop()
+				wait = false
+			}
+			if false {
+				fmt.Print(t)
+			}
+		}
+	}()
+
+	for wait {
+	}
+
 }

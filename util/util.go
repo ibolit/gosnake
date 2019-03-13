@@ -22,6 +22,10 @@ type Printable interface {
     Value() string
 }
 
+func PointPrint(val Printable) {
+    PrintAt(val.Point(), val.Value())
+}
+
 func (point Point) IsAdjacentTo(another Point) bool {
     xDiff := math.Abs(float64(point.X - another.X))
     yDiff := math.Abs(float64(point.Y - another.Y))
