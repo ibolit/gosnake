@@ -1,25 +1,21 @@
 package main
 
 import (
-	"gosnake/field"
-	"gosnake/util"
-	"gosnake/snake"
 	"fmt"
+	"gosnake/field"
+	"gosnake/keyListener"
+	"gosnake/snake"
+	"gosnake/util"
 )
-
-
 
 const RABBIT = "🐇🐁🐀🐔🐓🐊🐉🐤🐥🐦🐭🐯🐹🙀😼"
 const R_2 = "🐰🐅🐙☠☣☢"
-
 
 func printSnake(a_snake *snake.Snake) {
 	for it := a_snake.Iterator(); it.Next(); {
 		util.PrintAt(it.Value().Point(), ">")
 	}
 }
-
-
 
 func main() {
 	fmt.Println("Hello	")
@@ -33,7 +29,6 @@ func main() {
 	// 	currentSegment = newSegment
 	// }
 
-
 	a_field := field.NewField(10, 10)
 	a_field.Print()
 
@@ -42,10 +37,6 @@ func main() {
 	a_snake.MoveTo(util.Point{0, 1})
 	// a_field.Print()
 	printSnake(a_snake)
-	
-
-
-
 
 	// currentSegment = rootSegment
 	// for currentSegment.HasNext() {
@@ -54,7 +45,13 @@ func main() {
 	// 	currentSegment = currentSegment.Next()
 	// }
 
-	util.PrintAt(util.Point{11, 0}, ">>")
+	channel := make(chan keyListener.Direction)
 
+	util.PrintAt(util.Point{11, 0}, ">>")
+	go keyListener.Listen(channel)
+
+	for i := range channel {
+		fmt.Println(i)
+	}
 
 }

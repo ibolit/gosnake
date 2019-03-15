@@ -1,12 +1,11 @@
 package snake
 
 import (
-    "gosnake/util"
     "fmt"
+    "gosnake/util"
 )
 
 const SNAKE_S = "▄"
-
 
 type Segment struct {
     point    util.Point
@@ -17,7 +16,6 @@ type Segment struct {
 func NewSegment(x, y int, previous *Segment) *Segment {
     return &Segment{point: util.Point{x, y}, previous: previous}
 }
-
 
 func (segment *Segment) SetNext(next *Segment) {
     segment.next = next
@@ -43,12 +41,10 @@ func (segment *Segment) Value() string {
     return SNAKE_S
 }
 
-
 type Snake struct {
     head *Segment
     tail *Segment
 }
-
 
 func NewSnake() *Snake {
     snake := &Snake{}
@@ -57,7 +53,6 @@ func NewSnake() *Snake {
     return snake
 }
 
-
 func (snake *Snake) MoveTo(point util.Point) {
     // fmt.Println(snake.head.previous)
     if false {
@@ -65,8 +60,8 @@ func (snake *Snake) MoveTo(point util.Point) {
         fmt.Println(snake.head.previous == nil)
     }
     if point.IsAdjacentTo(snake.head.point) &&
-            snake.head.previous == nil || 
-            point != snake.head.previous.point {
+        snake.head.previous == nil ||
+        point != snake.head.previous.point {
         // fmt.Println("Moving")
         snake.addHead(point)
         // snake.removeTail()
@@ -74,7 +69,7 @@ func (snake *Snake) MoveTo(point util.Point) {
 }
 
 func (snake *Snake) addHead(point util.Point) {
-    newHead := &Segment{point:point, previous: snake.head}
+    newHead := &Segment{point: point, previous: snake.head}
     snake.head.next = newHead
     snake.head = newHead
     // fmt.Println(snake.head)
@@ -102,11 +97,3 @@ func (x *snakeIterator) Next() bool {
 func (x *snakeIterator) Value() util.Printable {
     return x.segment
 }
-
-
-
-
-
-
-
-
