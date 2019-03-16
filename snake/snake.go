@@ -5,14 +5,17 @@ import (
     "gosnake/util"
 )
 
-const SNAKE_S = "▄"
+// SnakeSymbol A symbol that makes up the snake
+const SnakeSymbol = "▄"
 
+// Segment a segment of the snake
 type Segment struct {
     point    util.Point
     next     *Segment
     previous *Segment
 }
 
+// NewSegment Make a new snake segment
 func NewSegment(x, y int, previous *Segment) *Segment {
     return &Segment{point: util.Point{x, y}, previous: previous}
 }
@@ -38,7 +41,7 @@ func (segment *Segment) Point() util.Point {
 }
 
 func (segment *Segment) Value() string {
-    return SNAKE_S
+    return SnakeSymbol
 }
 
 type Snake struct {
