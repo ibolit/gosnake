@@ -55,7 +55,8 @@ func main() {
 
 	aSnake := snake.NewSnake()
 	// printSnake(a_snake)
-	aSnake.MoveTo(util.Point{0, 1})
+	aSnake.SetCandidateMove(util.Right)
+	aSnake.Move()
 	// a_field.Print()
 	printSnake(aSnake)
 
@@ -66,35 +67,39 @@ func main() {
 	// 	currentSegment = currentSegment.Next()
 	// }
 
-	channel := make(chan keyListener.Direction)
-
-	util.PrintAt(util.Point{11, 0}, ">>")
-	go keyListener.Listen(channel)
-
-	for i := range channel {
-		fmt.Println(i)
-	}
-
-	i := 0
-
 	ticker := time.NewTicker(time.Millisecond * 500)
-	wait := true
-
 	go func() {
-		for t := range ticker.C {
-			i++
-			aSnake.MoveTo(util.Point{X: 0, Y: i})
+		for range ticker.C {
+			aSnake.Move()
 			printSnake(aSnake)
-			if i > 12 {
-				ticker.Stop()
-				wait = false
-			}
-			if false {
-				fmt.Print(t)
-			}
 		}
 	}()
 
-	for wait {
+	channel := make(chan util.Direction)
+	quit := make(chan int)
+
+	go keyListener.Listen(channel, quit)
+
+	util.PrintAt(util.Point{11, 0}, ">>")
+
+mainLoop:
+	for {
+
+		select {
+		case direction := <-channel:
+			aSnake.SetCandidateMove(direction)
+		case <-quit:
+			ticker.Stop()
+			close(channel)
+			close(quit)
+			break mainLoop
+		}
 	}
+
+	// for i := range channel {
+	// 	fmt.Println(i)
+	// }
+
+	// i := 0
+
 }

@@ -2,30 +2,22 @@ package keyListener
 
 import (
 	term "github.com/nsf/termbox-go"
-)
-
-type Direction int
-
-const (
-	Up Direction = iota
-	Down
-	Left
-	Right
+	"gosnake/util"
 )
 
 // func reset() {
 // 	term.Sync() // cosmestic purpose
 // }
 
-func Listen(c chan Direction) {
+// Listen Listens for key events and sends the detected direction to the
+// given channel
+func Listen(c chan util.Direction, quit chan int) {
 	err := term.Init()
 	if err != nil {
 		panic(err)
 	}
 
 	defer term.Close()
-
-	// fmt.Println("Enter any key to see their ASCII code or press ESC button to quit")
 
 keyPressListenerLoop:
 	for {
@@ -34,24 +26,17 @@ keyPressListenerLoop:
 			switch ev.Key {
 			case term.KeyEsc:
 				break keyPressListenerLoop
-				close(c)
+				quit <- 1
+				// close(c)
 
 			case term.KeyArrowUp:
-				// reset()
-				// fmt.Println("Arrow Up pressed")
-				c <- Up
+				c <- util.Up
 			case term.KeyArrowDown:
-				// reset()
-				// fmt.Println("Arrow Down pressed")
-				c <- Down
+				c <- util.Down
 			case term.KeyArrowLeft:
-				// reset()
-				// fmt.Println("Arrow Left pressed")
-				c <- Left
+				c <- util.Left
 			case term.KeyArrowRight:
-				// reset()
-				// fmt.Println("Arrow Right pressed")
-				c <- Right
+				c <- util.Right
 			}
 		case term.EventError:
 			panic(ev.Err)
