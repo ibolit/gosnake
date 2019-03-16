@@ -1,7 +1,6 @@
 package snake
 
 import (
-    "fmt"
     "gosnake/util"
 )
 
@@ -16,8 +15,8 @@ type Segment struct {
 }
 
 // NewSegment Make a new snake segment
-func NewSegment(x, y int, previous *Segment) *Segment {
-    return &Segment{point: util.Point{x, y}, previous: previous}
+func NewSegment(x, y int, next *Segment) *Segment {
+    return &Segment{point: util.Point{x, y}, next: next}
 }
 
 func (segment *Segment) SetNext(next *Segment) {
@@ -44,11 +43,13 @@ func (segment *Segment) Value() string {
     return SnakeSymbol
 }
 
+// Snake The structure holding our snake
 type Snake struct {
     head *Segment
     tail *Segment
 }
 
+// NewSnake Create a new snake instance
 func NewSnake() *Snake {
     snake := &Snake{}
     snake.head = &Segment{}
@@ -57,25 +58,16 @@ func NewSnake() *Snake {
 }
 
 func (snake *Snake) MoveTo(point util.Point) {
-    // fmt.Println(snake.head.previous)
-    if false {
-        fmt.Println(point.IsAdjacentTo(snake.head.point))
-        fmt.Println(snake.head.previous == nil)
-    }
-    if point.IsAdjacentTo(snake.head.point) &&
-        snake.head.previous == nil ||
-        point != snake.head.previous.point {
-        // fmt.Println("Moving")
-        snake.addHead(point)
-        // snake.removeTail()
-    }
+    snake.addHead(point)
+    util.PrintAt(util.Point{13, 0}, ">> Moving, head is "+snake.head.point.String())
+    // snake.removeTail()
+    // }
 }
 
 func (snake *Snake) addHead(point util.Point) {
-    newHead := &Segment{point: point, previous: snake.head}
-    snake.head.next = newHead
+    newHead := &Segment{point: point, next: snake.head}
+    snake.head.previous = newHead
     snake.head = newHead
-    // fmt.Println(snake.head)
 }
 
 func (snake *Snake) removeTail() {
@@ -84,8 +76,7 @@ func (snake *Snake) removeTail() {
 }
 
 func (snake *Snake) Iterator() *snakeIterator {
-    // fmt.Println(">>", snake.head)
-    return &snakeIterator{&Segment{previous: snake.head}}
+    return &snakeIterator{&Segment{next: snake.head}}
 }
 
 type snakeIterator struct {
@@ -93,7 +84,7 @@ type snakeIterator struct {
 }
 
 func (x *snakeIterator) Next() bool {
-    x.segment = x.segment.previous
+    x.segment = x.segment.next
     return x.segment != nil
 }
 
