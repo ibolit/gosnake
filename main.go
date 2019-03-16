@@ -26,51 +26,16 @@ func printSnake(aSnake *snake.Snake) {
 
 func main() {
 	fmt.Println("Hello	")
-
-	// l := iter2.NewLinkedList()
-	// for iter := l.Iter(); iter != nil; iter = iter.Next() {
-	// 	if iter == nil {
-	// 		fmt.Println("Iter is nil")
-	// 	}
-	// 	fmt.Println(iter)
-	// }
-
-	// for ; node != nil; node = node.Next() {
-	// 	fmt.Println(node)
-	// }
-
-	// return
-
-	// rootSegment := &snake.Segment{}
-	// // fmt.Println(rootSegment, &rootSegment)
-	// currentSegment := rootSegment
-	// for i := 0; i < 5; i++ {
-	// 	newSegment := snake.NewSegment(i, i, currentSegment)
-	// 	currentSegment.SetNext(newSegment)
-	// 	currentSegment = newSegment
-	// }
-
 	aField := field.NewField(10, 10)
 	aField.Print()
 
 	aSnake := snake.NewSnake()
-	// printSnake(a_snake)
-	aSnake.SetCandidateMove(util.Right)
-	aSnake.Move()
-	// a_field.Print()
-	printSnake(aSnake)
-
-	// currentSegment = rootSegment
-	// for currentSegment.HasNext() {
-	// 	util.PrintAt(currentSegment.Point(), currentSegment.Value())
-	// 	// fmt.Println(currentSegment.point.X)
-	// 	currentSegment = currentSegment.Next()
-	// }
 
 	ticker := time.NewTicker(time.Millisecond * 500)
 	go func() {
 		for range ticker.C {
 			aSnake.Move()
+			print("\033[H\033[2J")
 			printSnake(aSnake)
 		}
 	}()
@@ -95,11 +60,4 @@ mainLoop:
 			break mainLoop
 		}
 	}
-
-	// for i := range channel {
-	// 	fmt.Println(i)
-	// }
-
-	// i := 0
-
 }

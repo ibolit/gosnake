@@ -89,8 +89,7 @@ func (snake *Snake) nextPoint() util.Point {
 func (snake *Snake) Move() {
     snake.addHead(snake.nextPoint())
     util.PrintAt(util.Point{13, 0}, ">> Moving, head is "+snake.head.point.String())
-    // snake.removeTail()
-    // }
+    snake.removeTail()
 }
 
 func (snake *Snake) addHead(point util.Point) {
@@ -100,8 +99,8 @@ func (snake *Snake) addHead(point util.Point) {
 }
 
 func (snake *Snake) removeTail() {
-    snake.tail = snake.tail.next
-    snake.tail.previous = nil
+    snake.tail = snake.tail.previous
+    snake.tail.next = nil
 }
 
 // Iterator Get the iterator to iterate over the snake
