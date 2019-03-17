@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/buger/goterm"
+	"gosnake/iter"
 	"gosnake/keyListener"
 	"gosnake/snake"
 	"gosnake/util"
@@ -44,6 +45,14 @@ func getTermSize() (width, height int) {
 }
 
 func main() {
+	ll := iter.NewLinkedList()
+
+	iter.Each(ll, func(it Iterator) {
+		fmt.Println(it.Value())
+	})
+}
+
+func main2() {
 	width, height := getTermSize()
 	// fmt.Println("width, height: ", width, height)
 	// return
