@@ -5,10 +5,6 @@ import (
 	"gosnake/util"
 )
 
-// func reset() {
-// 	term.Sync() // cosmestic purpose
-// }
-
 // Listen Listens for key events and sends the detected direction to the
 // given channel
 func Listen(c chan util.Direction, quit chan int) {
@@ -27,7 +23,6 @@ keyPressListenerLoop:
 			case term.KeyEsc:
 				break keyPressListenerLoop
 				quit <- 1
-				// close(c)
 
 			case term.KeyArrowUp:
 				c <- util.Up

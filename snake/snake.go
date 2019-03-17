@@ -67,12 +67,25 @@ func NewSnake() *Snake {
 
 // SetCandidateMove Sets the next point the snake should move to
 func (snake *Snake) SetCandidateMove(direction util.Direction) {
+    nextPoint := snake.nextPoint(direction)
+    if snake.head.next != nil && snake.head.next.point == nextPoint {
+        return
+    }
     snake.direction = direction
 }
 
-func (snake *Snake) nextPoint() util.Point {
+func (snake *Snake) containsPoint(point util.Point) bool {
+    for it := snake.Iterator(); it.Next(); {
+        if it.Value().Point() == point {
+            return true
+        }
+    }
+    return false
+}
+
+func (snake *Snake) nextPoint(direction util.Direction) util.Point {
     startingPoint := snake.head.point
-    switch snake.direction {
+    switch direction {
     case util.Up:
         return util.Point{startingPoint.X - 1, startingPoint.Y}
     case util.Down:
@@ -85,11 +98,18 @@ func (snake *Snake) nextPoint() util.Point {
     return startingPoint
 }
 
-// MoveTo Move to the next (candidate) point
-func (snake *Snake) Move() {
-    snake.addHead(snake.nextPoint())
-    util.PrintAt(util.Point{13, 0}, ">> Moving, head is "+snake.head.point.String())
-    snake.removeTail()
+// Move Move to the next (candidate) point
+func (snake *Snake) Move(rabbit util.Point) (bool, int) {
+    nextPoint := snake.nextPoint(snake.direction)
+    if snake.containsPoint(nextPoint) {
+        return false, 1
+    }
+    snake.addHead(nextPoint)
+    if snake.head.point != rabbit {
+        snake.removeTail()
+        return false, 0
+    }
+    return true, 0
 }
 
 func (snake *Snake) addHead(point util.Point) {
