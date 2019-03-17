@@ -49,6 +49,14 @@ func (segment *Segment) Value() string {
     return SnakeSymbol
 }
 
+type Iterator interface {
+    Next() util.Printble
+}
+
+type Iterable interface {
+    Iterator() Iterator
+}
+
 // Snake The structure holding our snake
 type Snake struct {
     head      *Segment
